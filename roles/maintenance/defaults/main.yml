@@ -1,0 +1,25 @@
+---
+# Paquets de base a installer sur tous les serveurs
+paquets_communs:
+  - curl
+  - wget
+  - vim
+  - htop
+  - tree
+
+# Paquets specifiques Ubuntu
+paquets_ubuntu:
+  - net-tools
+  - software-properties-common
+
+# Paquets specifiques Rocky
+paquets_rocky:
+  - net-tools
+  - epel-release
+
+# Message du jour (MOTD)
+entreprise_nom: "InfraCloud"
+environnement: "production"
+contact_admin: "admin@infracloud.local"
+activer_motd: true
+

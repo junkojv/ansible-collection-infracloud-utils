@@ -1,0 +1,11 @@
+# Archives de build
+*.tar.gz
+
+# Fichiers Python compiles
+*.pyc
+__pycache__/
+
+# Fichiers systeme
+.DS_Store
+*.swp
+

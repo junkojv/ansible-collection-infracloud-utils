@@ -1,0 +1,4 @@
+---
+- name: Afficher confirmation MOTD
+  ansible.builtin.debug:
+    msg: "Le message du jour a ete mis a jour sur {{ ansible_hostname }}"

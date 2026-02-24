@@ -1,0 +1,24 @@
+---
+# Playbook inclus dans la collection infracloud.utils
+# Utilisation : ansible-playbook infracloud.utils.maintenance_complete
+- name: Maintenance complete des serveurs InfraCloud
+  hosts: all
+  become: true
+  tasks:
+    - name: Executer le role de maintenance
+      ansible.builtin.include_role:
+        name: infracloud.utils.maintenance
+
+    - name: Collecter les informations serveur
+      infracloud.utils.info_serveur:
+        afficher_memoire: true
+        afficher_disque: true
+      register: infos
+
+    - name: Afficher le rapport serveur
+      ansible.builtin.debug:
+        msg: >-
+          {{ infos.hostname }} -
+          CPU: {{ infos.cpu_count }} |
+          RAM: {{ infos.memoire_totale_mo | default('N/A') }} Mo |
+          Disque: {{ infos.disque_racine_go | default('N/A') }} Go

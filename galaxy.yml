@@ -1,0 +1,19 @@
+---
+namespace: infracloud
+name: utils
+version: 1.0.0
+readme: README.md
+authors:
+  - Jennifer Vernet <jennifer.vernet.dev@gmail.com>
+description: >
+  Collection utilitaire InfraCloud : outils de maintenance serveur,
+  monitoring de base et configuration standardisee.
+license:
+  - GPL-3.0-or-later
+tags:
+  - maintenance
+  - monitoring
+  - linux
+  - infrastructure
+dependencies: {}
+repository: https://github.com/junkojv/ansible-collection-infracloud-utils

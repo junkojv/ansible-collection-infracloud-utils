@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  author: Jennifer Vernet
+  description: Role de maintenance serveur - installation paquets de base et configuration MOTD
+  license: GPL-3.0-or-later
+  min_ansible_version: "2.14"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+  galaxy_tags:
+    - maintenance
+    - linux
+    - motd
+
+dependencies: []

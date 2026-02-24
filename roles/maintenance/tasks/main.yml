@@ -1,0 +1,82 @@
+---
+# ----------------------------------------------------------
+# PARTIE 1 : Mise a jour du systeme
+# ----------------------------------------------------------
+- name: Mettre a jour les paquets (Ubuntu/Debian)
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+
+- name: Mettre a jour les paquets (Rocky/RedHat)
+  ansible.builtin.dnf:
+    update_cache: true
+  when: ansible_os_family == "RedHat"
+
+# ----------------------------------------------------------
+# PARTIE 2 : Installation des paquets de base
+# ----------------------------------------------------------
+- name: Installer les paquets communs (Ubuntu/Debian)
+  ansible.builtin.apt:
+    name: "{{ paquets_communs + paquets_ubuntu }}"
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Installer EPEL (Rocky/RedHat)
+  ansible.builtin.dnf:
+    name: epel-release
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Installer les paquets communs (Rocky/RedHat)
+  ansible.builtin.dnf:
+    name: "{{ (paquets_communs + paquets_rocky) | reject('equalto', 'epel-release') | list }}"
+    state: present
+    allowerasing: true
+  when: ansible_os_family == "RedHat"
+
+# ----------------------------------------------------------
+# PARTIE 3 : Configuration du message du jour (MOTD)
+# ----------------------------------------------------------
+- name: Deployer le message du jour personnalise
+  ansible.builtin.template:
+    src: motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: "0644"
+  when: activer_motd
+  notify: Afficher confirmation MOTD
+
+# ----------------------------------------------------------
+# PARTIE 4 : Creation du repertoire de logs personnalise
+# ----------------------------------------------------------
+- name: Creer le repertoire de logs applicatif
+  ansible.builtin.file:
+    path: /var/log/infracloud
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Creer le fichier de log initial
+  ansible.builtin.copy:
+    content: |
+      # Journal de maintenance InfraCloud
+      # Serveur : {{ ansible_hostname }}
+      # Initialise le : {{ ansible_date_time.date }}
+    dest: /var/log/infracloud/maintenance.log
+    owner: root
+    group: root
+    mode: "0644"
+    force: false
+
+# ----------------------------------------------------------
+# PARTIE 5 : Affichage du resume
+# ----------------------------------------------------------
+- name: Afficher le resume de la maintenance
+  ansible.builtin.debug:
+    msg: >-
+      Maintenance terminee sur {{ ansible_hostname }}
+      ({{ ansible_os_family }}) -
+      {{ paquets_communs | length }} paquets communs installes
