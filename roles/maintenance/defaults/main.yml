@@ -23,3 +23,5 @@ environnement: "production"
 contact_admin: "admin@infracloud.local"
 activer_motd: true
 
+# Configuration du fuseau horaire
+fuseau_horaire: "Europe/Paris"

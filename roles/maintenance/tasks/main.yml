@@ -72,6 +72,15 @@
     force: false
 
 # ----------------------------------------------------------
+# PARTIE 6 : Configuration du fuseau horaire
+# ----------------------------------------------------------
+- name: Configurer le fuseau horaire
+  ansible.builtin.command:
+    cmd: "timedatectl set-timezone {{ fuseau_horaire }}"
+  changed_when: true
+  when: ansible_service_mgr == "systemd"
+
+# ----------------------------------------------------------
 # PARTIE 5 : Affichage du resume
 # ----------------------------------------------------------
 - name: Afficher le resume de la maintenance
